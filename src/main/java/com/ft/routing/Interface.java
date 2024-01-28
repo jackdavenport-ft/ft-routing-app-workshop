@@ -8,34 +8,36 @@ package com.ft.routing;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.UIManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.ft.routing.ui.MessagePanel;
+
 public class Interface extends JFrame {
 
     private static final Logger LOGGER = LogManager.getLogger(Interface.class);
+
+    private final MessagePanel messagePanel;
     
     protected Interface() {
         super("FutureTech Routing Workshop");
+        getContentPane().setPreferredSize(new Dimension(700, 275));
 
-        JLabel text = new JLabel("Hello world!");
-        text.setBorder(BorderFactory.createEmptyBorder(200, 200, 200, 200));
+        this.messagePanel = new MessagePanel();
+        getContentPane().add(this.messagePanel, BorderLayout.CENTER);
         
-        add(text, BorderLayout.CENTER);
+        // getContentPane().setBackground(Color.red);
 
         pack();
         setLocationRelativeTo((Component)null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLookAndFeel();
         setVisible(true);
-
-        LOGGER.info("window open");
     }
 
     private void setLookAndFeel() {
