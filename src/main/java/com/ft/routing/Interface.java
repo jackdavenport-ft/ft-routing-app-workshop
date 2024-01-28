@@ -2,9 +2,7 @@
 * Copyright (c) FutureTech Australia 2024
 * All rights reserved, this code is available for educational
 * purposes. Do not copy or redistribute.
-*
 * @author Jack Davenport
-*
 ****************************************************************/
 package com.ft.routing;
 
@@ -16,7 +14,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Interface extends JFrame {
+
+    private static final Logger LOGGER = LogManager.getLogger(Interface.class);
     
     protected Interface() {
         super("FutureTech Routing Workshop");
@@ -31,14 +34,15 @@ public class Interface extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLookAndFeel();
         setVisible(true);
+
+        LOGGER.info("window open");
     }
 
     private void setLookAndFeel() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
-            System.err.println("Unable to set look and feel");
-            e.printStackTrace();
+            LOGGER.warn("Unable to set look and feel", e);
         }
     }
 
