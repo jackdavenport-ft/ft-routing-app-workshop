@@ -9,6 +9,7 @@ package com.ft.routing;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.ft.routing.messaging.Mailbox;
 import com.ft.routing.server.Server;
 import com.ft.routing.server.Util;
 
@@ -19,11 +20,13 @@ public class App {
     private static String username;
     private static Interface ui;
     private static Server server;
+    private static Mailbox mailbox;
 
     public static void main(String[] args) {
         username = Util.generateUsername();
         ui = new Interface();
-        server = new Server();
+        mailbox = new Mailbox();
+        server = new Server(mailbox, ui);
 
         LOGGER.info("Username: {}", username);
 

@@ -21,6 +21,7 @@ import javax.swing.UIManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.ft.routing.messaging.Mailbox;
 import com.ft.routing.ui.ConfigurePanel;
 import com.ft.routing.ui.InfoPanel;
 import com.ft.routing.ui.MessagePanel;
@@ -30,6 +31,7 @@ public class Interface extends JFrame {
     private static final Logger LOGGER = LogManager.getLogger(Interface.class);
 
     private final MessagePanel messagePanel;
+    private final ConfigurePanel configurePanel;
 
     private boolean closeRequested = false;
     
@@ -52,7 +54,7 @@ public class Interface extends JFrame {
         infoPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         sidebar.add(infoPanel);
 
-        ConfigurePanel configurePanel = new ConfigurePanel();
+        this.configurePanel = new ConfigurePanel();
         configurePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         sidebar.add(configurePanel);
 
@@ -83,6 +85,10 @@ public class Interface extends JFrame {
 
     public boolean isCloseRequested() {
         return this.closeRequested;
+    }
+
+    public void onMailboxUpdate(Mailbox mailbox) {
+        mailbox.updateUi(this.configurePanel);
     }
 
 }
