@@ -6,9 +6,19 @@
 ****************************************************************/
 package com.ft.routing.server;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 import java.util.Random;
+import java.util.regex.Pattern;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Util {
+
+    private static final Logger LOGGER   = LogManager.getLogger(Util.class);
+    private static final String IP_REGEX = "[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+";
 
     public static final Random RANDOM = new Random();
 
@@ -43,6 +53,32 @@ public class Util {
 
     private static String randomItem(String[] array) {
         return array[RANDOM.nextInt(array.length)];
+    }
+
+    // source: https://stackoverflow.com/questions/9481865/getting-the-ip-address-of-the-current-machine-using-java
+    public static String getLocalIpAddress() {
+        try {
+            Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+            while(e.hasMoreElements()) {
+                NetworkInterface n = (NetworkInterface) e.nextElement();
+                Enumeration<InetAddress> ee = n.getInetAddresses();
+                while (ee.hasMoreElements()) {
+                    InetAddress i = (InetAddress) ee.nextElement();
+                    if(isValidIpAddress(i)) return i.getHostAddress();
+                }
+            }
+            LOGGER.warn("Couldn't find a suitable local IP address");
+            return "Cannot determine IP";
+        } catch (Exception e) {
+            LOGGER.error("Failed to get local IP address", e);
+            return "Error";
+        }
+        
+    }
+
+    private static boolean isValidIpAddress(InetAddress address) {
+        if(!address.isSiteLocalAddress()) return false;
+        return Pattern.matches(IP_REGEX, address.getHostAddress());
     }
 
 }

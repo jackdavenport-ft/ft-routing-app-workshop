@@ -7,17 +7,22 @@
 package com.ft.routing;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.ft.routing.ui.InfoPanel;
 import com.ft.routing.ui.MessagePanel;
 
 public class Interface extends JFrame {
@@ -30,10 +35,22 @@ public class Interface extends JFrame {
     
     protected Interface() {
         super("FutureTech Routing Workshop");
-        getContentPane().setPreferredSize(new Dimension(700, 275));
+        getContentPane().setPreferredSize(new Dimension(600, 275));
+        setMinimumSize(getContentPane().getPreferredSize());
 
         this.messagePanel = new MessagePanel();
         getContentPane().add(this.messagePanel, BorderLayout.CENTER);
+
+        // create sidebar of window
+        JPanel sidebar = new JPanel();
+        sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.LINE_AXIS));
+        sidebar.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 10));
+        sidebar.setBackground(Color.yellow);
+        getContentPane().add(sidebar, BorderLayout.EAST);
+
+        InfoPanel infoPanel = new InfoPanel();
+        infoPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        sidebar.add(infoPanel);
         
         // getContentPane().setBackground(Color.red);
 

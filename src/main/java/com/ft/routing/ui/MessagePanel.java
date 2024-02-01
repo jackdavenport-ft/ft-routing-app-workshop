@@ -6,6 +6,7 @@
 ****************************************************************/
 package com.ft.routing.ui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
@@ -19,12 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public class MessagePanel extends JPanel implements KeyListener {
-
-    private static final Logger LOGGER = LogManager.getLogger(MessagePanel.class);
 
     private final JTextField recipientField;
     private final JTextArea messageField;
@@ -61,6 +57,8 @@ public class MessagePanel extends JPanel implements KeyListener {
         add(messageLabel);
         add(this.messageField);
         add(this.sendButton);
+
+        setBackground(Color.blue);
     }
 
     @Override

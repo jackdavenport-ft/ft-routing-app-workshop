@@ -16,7 +16,7 @@ public class App {
 
     private static final Logger LOGGER = LogManager.getLogger(App.class);
 
-    public static String username;
+    private static String username;
     private static Interface ui;
     private static Server server;
 
@@ -42,5 +42,9 @@ public class App {
         server.closeServer();
         ui.dispose();
         System.exit(0);
+    }
+
+    public static String getUsername() {
+        return username;
     }
 }
