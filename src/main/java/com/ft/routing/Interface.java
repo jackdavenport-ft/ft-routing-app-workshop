@@ -7,7 +7,6 @@
 package com.ft.routing;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
@@ -35,7 +34,7 @@ public class Interface extends JFrame {
     
     protected Interface() {
         super("FutureTech Routing Workshop");
-        getContentPane().setPreferredSize(new Dimension(600, 275));
+        getContentPane().setPreferredSize(new Dimension(600, 320));
         setMinimumSize(getContentPane().getPreferredSize());
 
         this.messagePanel = new MessagePanel();
@@ -45,13 +44,12 @@ public class Interface extends JFrame {
         JPanel sidebar = new JPanel();
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.LINE_AXIS));
         sidebar.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 10));
-        sidebar.setBackground(Color.yellow);
         getContentPane().add(sidebar, BorderLayout.EAST);
 
         InfoPanel infoPanel = new InfoPanel();
         infoPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         sidebar.add(infoPanel);
-        
+
         // getContentPane().setBackground(Color.red);
 
         addWindowListener(new WindowAdapter() {

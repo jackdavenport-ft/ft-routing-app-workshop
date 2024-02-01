@@ -6,7 +6,6 @@
 ****************************************************************/
 package com.ft.routing.ui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
@@ -57,8 +56,6 @@ public class MessagePanel extends JPanel implements KeyListener {
         add(messageLabel);
         add(this.messageField);
         add(this.sendButton);
-
-        setBackground(Color.blue);
     }
 
     @Override

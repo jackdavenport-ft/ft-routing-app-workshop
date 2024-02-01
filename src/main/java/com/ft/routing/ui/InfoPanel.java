@@ -6,13 +6,14 @@
 ****************************************************************/
 package com.ft.routing.ui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
 
 import com.ft.routing.App;
 import com.ft.routing.server.Util;
@@ -21,6 +22,12 @@ public class InfoPanel extends JPanel {
     
     public InfoPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBorder(
+            BorderFactory.createTitledBorder(
+                BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
+                "Information"
+            )
+        );
 
         // create label components
         JLabel usernameHeader = new JLabel("Username");
@@ -45,8 +52,6 @@ public class InfoPanel extends JPanel {
         add(usernameLabel);
         add(ipAddressHeader);
         add(ipAddressLabel);
-
-        setBackground(Color.red);
     }
 
 }
