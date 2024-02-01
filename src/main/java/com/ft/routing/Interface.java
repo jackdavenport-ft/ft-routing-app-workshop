@@ -54,7 +54,7 @@ public class Interface extends JFrame {
         infoPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         sidebar.add(infoPanel);
 
-        this.configurePanel = new ConfigurePanel();
+        this.configurePanel = new ConfigurePanel(this);
         configurePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         sidebar.add(configurePanel);
 

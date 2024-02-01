@@ -8,19 +8,27 @@ package com.ft.routing.ui;
 
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
-public class ConfigurePanel extends JPanel {
+import com.ft.routing.Interface;
+
+public class ConfigurePanel extends JPanel implements ActionListener {
     
     private final JButton incomingButton;
     private final JButton outgoingButton;
     private final JButton forwardedButton;
 
-    public ConfigurePanel() {
+    private final Interface parent;
+
+    public ConfigurePanel(Interface parent) {
+        this.parent = parent;
+
         setLayout(new GridLayout(4, 1));
         setBorder(
             BorderFactory.createTitledBorder(
@@ -38,6 +46,10 @@ public class ConfigurePanel extends JPanel {
         setInboxCount(0);
         setOutboxCount(0);
         setForwardedCount(0);
+
+        // register actions
+        editRoutingButton.setActionCommand("edit_routes");
+        editRoutingButton.addActionListener(this);
         
         // left align everything
         editRoutingButton.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -50,6 +62,17 @@ public class ConfigurePanel extends JPanel {
         add(this.incomingButton);
         add(this.outgoingButton);
         add(this.forwardedButton);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        switch (e.getActionCommand()) {
+            case "edit_routes":
+                new RoutingDialog(this.parent);
+                break;
+            default:
+                break;
+        }
     }
 
     public void setInboxCount(int count) {
