@@ -30,8 +30,9 @@ public class InfoPanel extends JPanel {
 
         // make headers bold
         Font font = usernameHeader.getFont();
-        usernameHeader.setFont(font.deriveFont(font.getStyle() | Font.BOLD));
-        ipAddressHeader.setFont(font.deriveFont(font.getStyle() | Font.BOLD));
+        font = font.deriveFont(font.getStyle() | Font.BOLD);
+        usernameHeader.setFont(font);
+        ipAddressHeader.setFont(font);
 
         // align everything left
         usernameHeader.setAlignmentX(Component.LEFT_ALIGNMENT);
