@@ -9,6 +9,8 @@ package com.ft.routing;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -23,6 +25,8 @@ public class Interface extends JFrame {
     private static final Logger LOGGER = LogManager.getLogger(Interface.class);
 
     private final MessagePanel messagePanel;
+
+    private boolean closeRequested = false;
     
     protected Interface() {
         super("FutureTech Routing Workshop");
@@ -33,9 +37,16 @@ public class Interface extends JFrame {
         
         // getContentPane().setBackground(Color.red);
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                Interface.this.closeRequested = true;
+            }
+        });
+
         pack();
         setLocationRelativeTo((Component)null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLookAndFeel();
         setVisible(true);
     }
@@ -46,6 +57,10 @@ public class Interface extends JFrame {
         } catch (Exception e) {
             LOGGER.warn("Unable to set look and feel", e);
         }
+    }
+
+    public boolean isCloseRequested() {
+        return this.closeRequested;
     }
 
 }
