@@ -23,6 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.ft.routing.App;
+import com.ft.routing.Interface;
 import com.ft.routing.client.Client;
 import com.ft.routing.messaging.Message;
 
@@ -32,7 +33,11 @@ public class MessagePanel extends JPanel implements KeyListener, ActionListener 
     private final JTextArea messageField;
     private final JButton sendButton;
 
-    public MessagePanel() {
+    private final Interface parent;
+
+    public MessagePanel(Interface parent) {
+        this.parent = parent;
+
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -74,6 +79,8 @@ public class MessagePanel extends JPanel implements KeyListener, ActionListener 
         if(Client.sendMessage(message)) {
             this.messageField.setText("");
             this.recipientField.setText("");
+            App.getMailbox().delegateMessage(message);
+            this.parent.onMailboxUpdate(App.getMailbox());
         } else {
             JOptionPane.showMessageDialog(null, "Sorry, your message couldn't be sent!", "Failed", JOptionPane.ERROR_MESSAGE);
         }

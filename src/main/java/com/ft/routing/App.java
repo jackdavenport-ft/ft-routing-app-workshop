@@ -50,4 +50,9 @@ public class App {
     public static String getUsername() {
         return username;
     }
+
+    public static Mailbox getMailbox() {
+        return mailbox;
+    }
+    
 }

@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.ft.routing.Interface;
+import com.ft.routing.client.Client;
 import com.ft.routing.messaging.Mailbox;
 import com.ft.routing.messaging.Message;
 import com.ft.routing.messaging.Mailbox.MessageDirection;
@@ -76,10 +77,11 @@ public class Server implements Runnable {
 
             // handle the message depending on the direction
             switch (direction) {
-                case OUTBOX:
-                    LOGGER.info("message sent to user");
                 case FORWARD:
-                    LOGGER.info("message forwarded to user");
+                    LOGGER.info("Forwarding message for {}", sender);
+                    Client.sendMessage(message);
+                case OUTBOX:
+                    LOGGER.warn("Recieved message meant for outbox, not proceeding further");
                 case INBOX:
                 default:
                     break;

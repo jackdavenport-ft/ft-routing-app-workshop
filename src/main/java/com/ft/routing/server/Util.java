@@ -8,9 +8,12 @@ package com.ft.routing.server;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,6 +56,11 @@ public class Util {
 
     private static String randomItem(String[] array) {
         return array[RANDOM.nextInt(array.length)];
+    }
+
+    public static String randomItem(Collection<String> collection) {
+        List<String> list = collection.stream().collect(Collectors.toList());
+        return list.get(RANDOM.nextInt(list.size()));
     }
 
     // source: https://stackoverflow.com/questions/9481865/getting-the-ip-address-of-the-current-machine-using-java

@@ -41,7 +41,7 @@ public class Interface extends JFrame {
         setMinimumSize(getContentPane().getPreferredSize());
 
         // add message panel component
-        this.messagePanel = new MessagePanel();
+        this.messagePanel = new MessagePanel(this);
         getContentPane().add(this.messagePanel, BorderLayout.CENTER);
 
         // create sidebar of window

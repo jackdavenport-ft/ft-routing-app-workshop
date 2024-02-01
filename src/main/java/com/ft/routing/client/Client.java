@@ -21,16 +21,28 @@ public class Client {
     private static final Logger LOGGER = LogManager.getLogger(Client.class);
 
     public static boolean sendMessage(Message message) {
+        if(RouteTable.isEmpty()) {
+            LOGGER.warn("Cannot send message, there are no routes defined");
+            return false;
+        }
         if(message.getTarget().equals(App.getUsername())) {
             LOGGER.warn("Refusing to send message, cannot send message to yourself");
             return false;
         }
 
-        String address = "localhost"; // TODO: get IP from routing table
+        // here's the magic of how this works
+        // if we have an entry for the recipient we send it directly to them
+        // but if we don't, we'll just forward it to a random person in our
+        // table, and eventually it should get to the right person
+        String targetUsername = message.getTarget();
+        String targetAddress = RouteTable.getAddress(targetUsername);
+        if(!RouteTable.hasAddressFor(targetUsername)) {
+            targetAddress = RouteTable.getRandomAddress();
+        }
 
         try {
             // open connection to server and write message data
-            Socket socket = new Socket(address, Server.PORT);
+            Socket socket = new Socket(targetAddress, Server.PORT);
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
             dos.writeUTF(message.getSender());
             dos.writeUTF(message.getTarget());
