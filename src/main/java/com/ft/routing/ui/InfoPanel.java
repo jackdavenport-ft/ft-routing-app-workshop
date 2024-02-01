@@ -24,7 +24,10 @@ public class InfoPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(
             BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
+                BorderFactory.createCompoundBorder(
+                    BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
+                    BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                ),
                 "Information"
             )
         );
@@ -40,6 +43,9 @@ public class InfoPanel extends JPanel {
         font = font.deriveFont(font.getStyle() | Font.BOLD);
         usernameHeader.setFont(font);
         ipAddressHeader.setFont(font);
+
+        // add spacing between labels
+        ipAddressHeader.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 
         // align everything left
         usernameHeader.setAlignmentX(Component.LEFT_ALIGNMENT);
