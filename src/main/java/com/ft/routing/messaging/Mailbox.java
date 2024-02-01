@@ -1,16 +1,22 @@
+/****************************************************************
+* Copyright (c) FutureTech Australia 2024
+* All rights reserved, this code is available for educational
+* purposes. Do not copy or redistribute.
+* @author Jack Davenport
+****************************************************************/
 package com.ft.routing.messaging;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.ft.routing.App;
 import com.ft.routing.ui.ConfigurePanel;
 
 public class Mailbox {
     
-    private final List<Message> inbox     = new ArrayList<>();
-    private final List<Message> outbox    = new ArrayList<>();
-    private final List<Message> forwarded = new ArrayList<>();
+    private final Set<Message> inbox     = new HashSet<>();
+    private final Set<Message> outbox    = new HashSet<>();
+    private final Set<Message> forwarded = new HashSet<>();
 
     public MessageDirection delegateMessage(Message message) {
         if(message.getTarget().equals(App.getUsername())) {

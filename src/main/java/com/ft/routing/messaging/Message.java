@@ -15,7 +15,7 @@ public class Message {
     public Message(String content, String sender, String target) {
         this.content = content;
         this.sender  = sender;
-        this.target  = sender;
+        this.target  = target;
     }
 
     public String getContent() {

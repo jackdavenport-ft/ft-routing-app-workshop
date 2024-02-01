@@ -8,6 +8,8 @@ package com.ft.routing.ui;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -15,11 +17,16 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class MessagePanel extends JPanel implements KeyListener {
+import com.ft.routing.App;
+import com.ft.routing.client.Client;
+import com.ft.routing.messaging.Message;
+
+public class MessagePanel extends JPanel implements KeyListener, ActionListener {
 
     private final JTextField recipientField;
     private final JTextArea messageField;
@@ -50,12 +57,26 @@ public class MessagePanel extends JPanel implements KeyListener {
         this.messageField.addKeyListener(this);
         this.sendButton.setEnabled(false);
 
+        // add action listener to button
+        this.sendButton.addActionListener(this);
+
         // construct ui
         add(recipientLabel);
         add(this.recipientField);
         add(messageLabel);
         add(this.messageField);
         add(this.sendButton);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Message message = new Message(this.messageField.getText(), App.getUsername(), this.recipientField.getText());
+        if(Client.sendMessage(message)) {
+            this.messageField.setText("");
+            this.recipientField.setText("");
+        } else {
+            JOptionPane.showMessageDialog(null, "Sorry, your message couldn't be sent!", "Failed", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @Override
