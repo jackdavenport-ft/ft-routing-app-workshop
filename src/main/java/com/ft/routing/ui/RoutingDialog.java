@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map.Entry;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,14 +20,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.ft.routing.Interface;
+import com.ft.routing.client.RouteTable;
 
 public class RoutingDialog extends JDialog implements ActionListener {
-
-    private static final Logger LOGGER = LogManager.getLogger(RoutingDialog.class);
 
     private final JTable table;
     private final JButton addButton;
@@ -80,8 +77,9 @@ public class RoutingDialog extends JDialog implements ActionListener {
         switch(e.getActionCommand()) {
             case "remove_item":
                 if(this.table.getSelectedRow() > -1) {
+                    Entry<String,String> entry = RouteTable.getRouteEntry(this.table.getSelectedRow());
+                    RouteTable.removeAddress(entry.getKey());
                     this.table.getSelectionModel().clearSelection();
-                    LOGGER.info("deleted row " + this.table.getSelectedRow());
                 }
                 break;
             default:
