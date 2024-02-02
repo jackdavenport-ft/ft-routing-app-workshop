@@ -8,34 +8,77 @@ package com.ft.routing.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ft.routing.Interface;
 
-public class RoutingDialog extends JDialog {
+public class RoutingDialog extends JDialog implements ActionListener {
+
+    private static final Logger LOGGER = LogManager.getLogger(RoutingDialog.class);
+
+    private final JTable table;
+    private final JButton addButton;
+    private final JButton removeButton;
 
     public RoutingDialog(Interface parent) {
         setMinimumSize(new Dimension(500, 400));
         setPreferredSize(getMinimumSize());
         setLayout(new BorderLayout());
 
-        DefaultListModel<String> testModel = new DefaultListModel<>();
-        testModel.addElement("hello");
-        testModel.addElement("world");
-        testModel.addElement("this");
-        testModel.addElement("is");
-        testModel.addElement("routing");
-        testModel.addElement("baby");
+        Object[][] data = {
+            { "test_user1", "192.168.0.23" },
+            { "test_user2", "192.168.0.24" },
+            { "test_user3", "192.168.0.25" },
+            { "test_user4", "192.168.0.26" }
+        };
+        String[] headers = {
+            "Username", "IP Address"
+        };
 
-        JList<String> list = new JList<>(testModel);
-        JScrollPane scrollPane = new JScrollPane(list);
+        DefaultTableModel testModel = new DefaultTableModel(data, headers);
+
+        this.table = new JTable(testModel);
+        JScrollPane scrollPane = new JScrollPane(this.table);
         add(scrollPane, BorderLayout.CENTER);
 
+        // create action toolbar above table
+        JPanel actionsPanel = new JPanel();
+        actionsPanel.setLayout(new FlowLayout());
+
+        this.addButton = new JButton("Add");
+        this.addButton.setActionCommand("add_item");
+        this.addButton.addActionListener(this);
+
+        this.removeButton = new JButton("Remove");
+        this.removeButton.setEnabled(false);
+        this.removeButton.setActionCommand("remove_item");
+        this.removeButton.addActionListener(this);
+        
+        actionsPanel.add(this.addButton);
+        actionsPanel.add(this.removeButton);
+        add(actionsPanel, BorderLayout.NORTH);
+
+        // add event handlers to table
+        this.table.getSelectionModel().addListSelectionListener((e) -> {
+            if(!e.getValueIsAdjusting()) {
+                RoutingDialog.this.removeButton.setEnabled(table.getSelectedRow() > -1);
+            }
+        });
+
+        // configure and show dialog
         pack();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -43,6 +86,20 @@ public class RoutingDialog extends JDialog {
         setModalityType(ModalityType.APPLICATION_MODAL);
         setLocationRelativeTo(parent);
         setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        switch(e.getActionCommand()) {
+            case "remove_item":
+                if(this.table.getSelectedRow() > -1) {
+                    this.table.getSelectionModel().clearSelection();
+                    LOGGER.info("deleted row " + this.table.getSelectedRow());
+                }
+                break;
+            default:
+                break;
+        }
     }
 
 }
