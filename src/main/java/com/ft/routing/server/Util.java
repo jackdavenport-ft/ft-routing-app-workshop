@@ -86,7 +86,11 @@ public class Util {
 
     private static boolean isValidIpAddress(InetAddress address) {
         if(!address.isSiteLocalAddress()) return false;
-        return Pattern.matches(IP_REGEX, address.getHostAddress());
+        return isValidIpFormat(address.getHostAddress());
+    }
+
+    public static boolean isValidIpFormat(String address) {
+        return Pattern.matches(IP_REGEX, address);
     }
 
 }

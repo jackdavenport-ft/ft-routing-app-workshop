@@ -46,7 +46,7 @@ public class RouteTable {
     }
 
     public static int getRouteCount() {
-        return routeTable.size();
+        return routeList.size();
     }
 
     public static Entry<String, String> getRouteEntry(int index) {

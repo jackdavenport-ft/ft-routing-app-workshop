@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import com.ft.routing.client.RouteTable;
+import com.ft.routing.server.Util;
 
 public class RoutingTableModel implements TableModel {
 
@@ -59,16 +60,20 @@ public class RoutingTableModel implements TableModel {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         // change value in route table
         if(aValue instanceof String) {
+            String value = ((String)aValue).trim();
+            if(value.isEmpty()) return;
             Entry<String,String> entry = RouteTable.getRouteEntry(rowIndex);
             String oldUsername = entry.getKey();
             String oldAddress = entry.getValue();
             if(columnIndex == 0) {
                 // update username
                 RouteTable.removeAddress(oldUsername);
-                RouteTable.setAddress((String)aValue, oldAddress);
+                RouteTable.setAddress(value, oldAddress);
             } else {
+                // validate address fist
+                if(!Util.isValidIpFormat(value)) return;
                 // update address
-                RouteTable.setAddress(oldUsername, (String)aValue);
+                RouteTable.setAddress(oldUsername, value);
             }
         }
         // notify table listeners of change
