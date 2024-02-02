@@ -57,7 +57,20 @@ public class RoutingTableModel implements TableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        // TODO: change value in route table
+        // change value in route table
+        if(aValue instanceof String) {
+            Entry<String,String> entry = RouteTable.getRouteEntry(rowIndex);
+            String oldUsername = entry.getKey();
+            String oldAddress = entry.getValue();
+            if(columnIndex == 0) {
+                // update username
+                RouteTable.removeAddress(oldUsername);
+                RouteTable.setAddress((String)aValue, oldAddress);
+            } else {
+                // update address
+                RouteTable.setAddress(oldUsername, (String)aValue);
+            }
+        }
         // notify table listeners of change
         for(TableModelListener l : this.modelListeners) {
             l.tableChanged(new TableModelEvent(this, rowIndex, rowIndex, columnIndex));

@@ -24,6 +24,11 @@ public class RouteTable {
         rebuildRouteList();
     }
 
+    public static void removeAddress(String username) {
+        routeTable.remove(username);
+        rebuildRouteList();
+    }
+
     public static String getAddress(String username) {
         return routeTable.get(username);
     }
