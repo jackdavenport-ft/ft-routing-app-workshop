@@ -18,7 +18,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,19 +37,7 @@ public class RoutingDialog extends JDialog implements ActionListener {
         setPreferredSize(getMinimumSize());
         setLayout(new BorderLayout());
 
-        Object[][] data = {
-            { "test_user1", "192.168.0.23" },
-            { "test_user2", "192.168.0.24" },
-            { "test_user3", "192.168.0.25" },
-            { "test_user4", "192.168.0.26" }
-        };
-        String[] headers = {
-            "Username", "IP Address"
-        };
-
-        DefaultTableModel testModel = new DefaultTableModel(data, headers);
-
-        this.table = new JTable(testModel);
+        this.table = new JTable(new RoutingTableModel());
         JScrollPane scrollPane = new JScrollPane(this.table);
         add(scrollPane, BorderLayout.CENTER);
 
