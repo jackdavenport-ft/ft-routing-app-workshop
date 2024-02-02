@@ -40,13 +40,16 @@ public class RoutingDialog extends JDialog implements ActionListener {
     private final JButton addButton;
     private final JButton removeButton;
 
+    private final RoutingTableModel model;
+
     public RoutingDialog(Interface parent) {
         setTitle("Edit route table");
         setMinimumSize(new Dimension(500, 400));
         setPreferredSize(getMinimumSize());
         setLayout(new BorderLayout());
 
-        this.table = new JTable(new RoutingTableModel());
+        this.model = new RoutingTableModel();
+        this.table = new JTable(this.model);
         JScrollPane scrollPane = new JScrollPane(this.table);
         add(scrollPane, BorderLayout.CENTER);
 
@@ -109,7 +112,10 @@ public class RoutingDialog extends JDialog implements ActionListener {
         private final JButton addButton;
         private final JLabel errorLabel;
 
+        private final RoutingTableModel model;
+
         private AddDialog(RoutingDialog parent) {
+            this.model = parent.model;
             setTitle("Add new route");
             setMinimumSize(new Dimension(300, 200));
             setPreferredSize(getMinimumSize());
@@ -179,6 +185,7 @@ public class RoutingDialog extends JDialog implements ActionListener {
                 return;
             }
             RouteTable.setAddress(username, address);
+            this.model.refreshTable();
             this.dispose();
         }
 

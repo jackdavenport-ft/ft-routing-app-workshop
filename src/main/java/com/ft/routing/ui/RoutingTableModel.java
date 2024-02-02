@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import com.ft.routing.client.RouteTable;
@@ -21,7 +20,6 @@ import com.ft.routing.server.Util;
 public class RoutingTableModel implements TableModel {
 
     private static final String[] HEADER_LABELS = { "Username", "IP Address" };
-    private static final Class<?> COLUMN_CLASS = getDefaultColumnClass();
 
     private final Set<TableModelListener> modelListeners = new HashSet<>();
 
@@ -42,7 +40,7 @@ public class RoutingTableModel implements TableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return COLUMN_CLASS;
+        return String.class;
     }
 
     @Override
@@ -78,8 +76,16 @@ public class RoutingTableModel implements TableModel {
         }
         // notify table listeners of change
         for(TableModelListener l : this.modelListeners) {
+            System.out.println(l);
             l.tableChanged(new TableModelEvent(this, rowIndex, rowIndex, columnIndex));
         }   
+    }
+
+    public void refreshTable() {
+        for(TableModelListener l : this.modelListeners) {
+            System.out.println(l);
+            l.tableChanged(new TableModelEvent(this, 0, RouteTable.getRouteCount(), TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT));
+        }
     }
 
     @Override
@@ -90,10 +96,6 @@ public class RoutingTableModel implements TableModel {
     @Override
     public void removeTableModelListener(TableModelListener l) {
         modelListeners.remove(l);
-    }
-
-    private static Class<?> getDefaultColumnClass() {
-        return new DefaultTableModel().getColumnClass(0);
     }
     
 }
