@@ -76,14 +76,12 @@ public class RoutingTableModel implements TableModel {
         }
         // notify table listeners of change
         for(TableModelListener l : this.modelListeners) {
-            System.out.println(l);
             l.tableChanged(new TableModelEvent(this, rowIndex, rowIndex, columnIndex));
         }   
     }
 
     public void refreshTable() {
         for(TableModelListener l : this.modelListeners) {
-            System.out.println(l);
             l.tableChanged(new TableModelEvent(this, 0, RouteTable.getRouteCount(), TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT));
         }
     }

@@ -58,9 +58,4 @@ public class RouteTable {
         routeList.addAll(routeTable.entrySet());
     }
 
-    static {
-        // debug: add a dummy value
-        setAddress("example_user1", "192.168.1.1");
-    }
-
 }
