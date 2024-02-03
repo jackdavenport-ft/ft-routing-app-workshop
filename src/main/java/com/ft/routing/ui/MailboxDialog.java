@@ -8,6 +8,8 @@ package com.ft.routing.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -27,9 +29,18 @@ public class MailboxDialog extends JDialog {
         setLayout(new BorderLayout());
 
         // create mailbox table
-        JTable table = new JTable(new MailboxTableModel(mailbox, direction));
+        MailboxTableModel model = new MailboxTableModel(mailbox, direction);
+        JTable table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
+
+        // disable table model on close
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                model.disable();
+            }
+        });
 
         // configure and show dialog
         pack();

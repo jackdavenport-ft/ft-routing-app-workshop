@@ -19,20 +19,24 @@ public class Mailbox {
     private final Set<Message> outbox    = new HashSet<>();
     private final Set<Message> forwarded = new HashSet<>();
 
+    private final Set<MailboxEventListener> eventListeners = new HashSet<>();
+
     public MessageDirection delegateMessage(Message message) {
+        MessageDirection type = MessageDirection.FORWARDED;
         if(message.getTarget().equals(App.getUsername())) {
             // target is the user, message is coming in
             this.inbox.add(message);
-            return MessageDirection.INBOX;
+            type = MessageDirection.INBOX;
         } else if(message.getSender().equals(App.getUsername())) {
             // sender is the user, message is going out
             this.outbox.add(message);
-            return MessageDirection.OUTBOX;
+            type = MessageDirection.OUTBOX;
         } else {
             // neither matches the user, we must be forwarding this one
             this.forwarded.add(message);
-            return MessageDirection.FORWARDED;
         }
+        this.notifyListeners(message, type);
+        return type;
     }
 
     public Set<Message> getMessages(MessageDirection direction) {
@@ -50,10 +54,28 @@ public class Mailbox {
         panel.setForwardedCount(forwarded.size());
     }
 
+    public void addEventListener(MailboxEventListener l) {
+        this.eventListeners.add(l);
+    }
+
+    public void removeEventListener(MailboxEventListener l) {
+        this.eventListeners.remove(l);
+    }
+
+    private void notifyListeners(Message message, MessageDirection type) {
+        for(MailboxEventListener l : this.eventListeners) {
+            l.messageAdded(message, type);
+        }
+    }
+    
     public enum MessageDirection {
         INBOX,
         OUTBOX,
         FORWARDED
+    }
+
+    public interface MailboxEventListener {
+        void messageAdded(Message message, MessageDirection type);
     }
 
 }

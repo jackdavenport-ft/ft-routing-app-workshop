@@ -5,14 +5,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import com.ft.routing.messaging.Mailbox;
+import com.ft.routing.messaging.Mailbox.MailboxEventListener;
 import com.ft.routing.messaging.Mailbox.MessageDirection;
 import com.ft.routing.messaging.Message;
 
-public class MailboxTableModel implements TableModel {
+public class MailboxTableModel implements TableModel, MailboxEventListener {
 
     private static final String[] HEADER_LABELS = { "Content", "Sender", "Recipient" };
 
@@ -28,6 +30,11 @@ public class MailboxTableModel implements TableModel {
         this.type = type;
         this.messages = mailbox.getMessages(type);
         this.messageList = this.messages.stream().collect(Collectors.toList());
+        mailbox.addEventListener(this);
+    }
+
+    protected void disable() {
+        mailbox.removeEventListener(this);
     }
 
     @Override
@@ -73,7 +80,15 @@ public class MailboxTableModel implements TableModel {
     public void removeTableModelListener(TableModelListener l) {
         this.listeners.remove(l);
     }
-    
 
+    @Override
+    public void messageAdded(Message message, MessageDirection type) {
+        if(type != this.type) return;
+        this.messageList.clear();
+        this.messageList.addAll(this.messages.stream().collect(Collectors.toList()));
+        for(TableModelListener l : this.listeners) {
+            l.tableChanged(new TableModelEvent(this, 0, this.messageList.size(), TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT));
+        }
+    }
 
 }
