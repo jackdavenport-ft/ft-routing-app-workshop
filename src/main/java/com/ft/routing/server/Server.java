@@ -77,7 +77,7 @@ public class Server implements Runnable {
 
             // handle the message depending on the direction
             switch (direction) {
-                case FORWARD:
+                case FORWARDED:
                     LOGGER.info("Forwarding message for {}", sender);
                     Client.sendMessage(message);
                 case OUTBOX:

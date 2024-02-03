@@ -42,7 +42,7 @@ public class RoutingDialog extends JDialog implements ActionListener {
 
     private final RoutingTableModel model;
 
-    public RoutingDialog(Interface parent) {
+    protected RoutingDialog(Interface parent) {
         setTitle("Edit route table");
         setMinimumSize(new Dimension(500, 400));
         setPreferredSize(getMinimumSize());

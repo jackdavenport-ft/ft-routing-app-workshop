@@ -16,7 +16,9 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
+import com.ft.routing.App;
 import com.ft.routing.Interface;
+import com.ft.routing.messaging.Mailbox.MessageDirection;
 
 public class ConfigurePanel extends JPanel implements ActionListener {
     
@@ -50,6 +52,12 @@ public class ConfigurePanel extends JPanel implements ActionListener {
         // register actions
         editRoutingButton.setActionCommand("edit_routes");
         editRoutingButton.addActionListener(this);
+        this.incomingButton.setActionCommand(MessageDirection.INBOX.name());
+        this.incomingButton.addActionListener(this);
+        this.outgoingButton.setActionCommand(MessageDirection.OUTBOX.name());
+        this.outgoingButton.addActionListener(this);
+        this.forwardedButton.setActionCommand(MessageDirection.FORWARDED.name());
+        this.forwardedButton.addActionListener(this);
         
         // left align everything
         editRoutingButton.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -71,6 +79,10 @@ public class ConfigurePanel extends JPanel implements ActionListener {
                 new RoutingDialog(this.parent);
                 break;
             default:
+                MessageDirection direction = MessageDirection.valueOf(e.getActionCommand());
+                if(direction != null) {
+                    new MailboxDialog(this.parent, App.getMailbox(), direction);
+                }
                 break;
         }
     }

@@ -6,6 +6,7 @@
 ****************************************************************/
 package com.ft.routing.messaging;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +31,16 @@ public class Mailbox {
         } else {
             // neither matches the user, we must be forwarding this one
             this.forwarded.add(message);
-            return MessageDirection.FORWARD;
+            return MessageDirection.FORWARDED;
+        }
+    }
+
+    public Set<Message> getMessages(MessageDirection direction) {
+        switch(direction) {
+            case INBOX: return this.inbox;
+            case OUTBOX: return this.outbox;
+            case FORWARDED: return this.forwarded;
+            default: return Collections.emptySet();
         }
     }
 
@@ -43,7 +53,7 @@ public class Mailbox {
     public enum MessageDirection {
         INBOX,
         OUTBOX,
-        FORWARD
+        FORWARDED
     }
 
 }
