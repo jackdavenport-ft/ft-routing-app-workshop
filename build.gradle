@@ -1,6 +1,10 @@
 plugins {
     id 'application'
+    id 'edu.sc.seis.launch4j' version '3.0.5'
+    id "com.github.johnrengelman.shadow" version "8.1.1"
 }
+
+project.version = '1.0.0'
 
 repositories {
     mavenCentral()
@@ -10,6 +14,21 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-core:2.22.1'
 }
 
+def appMainClass = 'com.ft.routing.App'
+
 application {
-    mainClass = 'com.ft.routing.App'
+    mainClass = appMainClass
+}
+
+launch4j {
+    mainClassName = appMainClass
+    icon = "${projectDir}/icons/win.ico"
+    jarTask = project.tasks.shadowJar
+    productName = 'FutureTech Routing'
+    copyright = 'Copyright (c) FutureTech Australia 2024'
+    mutexName = 'ft-routing-app'
+}
+
+shadowJar {
+    relocate('org.apache.logging.log4j', 'log4j')
 }
