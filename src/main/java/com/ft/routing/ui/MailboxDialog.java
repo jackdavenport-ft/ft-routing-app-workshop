@@ -11,6 +11,8 @@ import java.awt.Dimension;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 import com.ft.routing.Interface;
 import com.ft.routing.messaging.Mailbox;
@@ -23,6 +25,11 @@ public class MailboxDialog extends JDialog {
         setMinimumSize(new Dimension(500, 400));
         setPreferredSize(getMinimumSize());
         setLayout(new BorderLayout());
+
+        // create mailbox table
+        JTable table = new JTable(new MailboxTableModel(mailbox, direction));
+        JScrollPane scrollPane = new JScrollPane(table);
+        add(scrollPane, BorderLayout.CENTER);
 
         // configure and show dialog
         pack();
