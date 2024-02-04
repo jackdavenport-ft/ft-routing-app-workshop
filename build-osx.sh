@@ -20,5 +20,5 @@ jar2app build/libs/ft-*-all.jar $OUT_DIR/$APP_NAME \
     -b "$MAIN_CLASS" \
     -c "Copyright (c) FutureTech Australia 2024" \
     -m $MAIN_CLASS \
-    -r $JRE_HOME \  
+    -r $JRE_HOME \
     -i icons/mac.icns
