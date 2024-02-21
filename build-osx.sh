@@ -16,7 +16,7 @@ echo "JRE Home: $JRE_HOME"
 
 jar2app build/libs/ft-*-all.jar $OUT_DIR/$APP_NAME \
     -n "FutureTech\\ Routing" \
-    -v "1.0.0" \
+    -v "1.0.1" \
     -b "$MAIN_CLASS" \
     -c "Copyright (c) FutureTech Australia 2024" \
     -m $MAIN_CLASS \
