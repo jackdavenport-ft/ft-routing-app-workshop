@@ -25,6 +25,7 @@ import javax.swing.JTextField;
 import com.ft.routing.App;
 import com.ft.routing.Interface;
 import com.ft.routing.client.Client;
+import com.ft.routing.client.SendResult;
 import com.ft.routing.messaging.Message;
 
 public class MessagePanel extends JPanel implements KeyListener, ActionListener {
@@ -76,13 +77,14 @@ public class MessagePanel extends JPanel implements KeyListener, ActionListener 
     @Override
     public void actionPerformed(ActionEvent e) {
         Message message = new Message(this.messageField.getText(), App.getUsername(), this.recipientField.getText());
-        if(Client.sendMessage(message)) {
+        SendResult result = Client.sendMessage(message);
+        if(result.isSuccess()) {
             this.messageField.setText("");
             this.recipientField.setText("");
             App.getMailbox().delegateMessage(message);
             this.parent.onMailboxUpdate(App.getMailbox());
         } else {
-            JOptionPane.showMessageDialog(null, "Sorry, your message couldn't be sent!", "Failed", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, result.getErrorMessage(), "Couldn't send message!", JOptionPane.ERROR_MESSAGE);
         }
     }
 

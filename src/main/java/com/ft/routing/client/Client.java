@@ -7,7 +7,9 @@
 package com.ft.routing.client;
 
 import java.io.DataOutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,17 +19,16 @@ import com.ft.routing.messaging.Message;
 import com.ft.routing.server.Server;
 
 public class Client {
-    
-    private static final Logger LOGGER = LogManager.getLogger(Client.class);
 
-    public static boolean sendMessage(Message message) {
+    public static final Logger LOGGER = LogManager.getLogger(Client.class);
+    private static final int TIMEOUT_MS = 3000;
+
+    public static SendResult sendMessage(Message message) {
         if(RouteTable.isEmpty()) {
-            LOGGER.warn("Cannot send message, there are no routes defined");
-            return false;
+            return new SendResult(false, "Cannot send message, there are no routes defined");
         }
         if(message.getTarget().equals(App.getUsername())) {
-            LOGGER.warn("Refusing to send message, cannot send message to yourself");
-            return false;
+            return new SendResult(false, "You cannot send messages to yourself!");
         }
 
         // here's the magic of how this works
@@ -41,8 +42,12 @@ public class Client {
         }
 
         try {
-            // open connection to server and write message data
-            Socket socket = new Socket(targetAddress, Server.PORT);
+            // open connection to server
+            Socket socket = new Socket();
+            socket.connect(new InetSocketAddress(targetAddress, Server.PORT), TIMEOUT_MS);
+            socket.setSoTimeout(TIMEOUT_MS);
+
+            // write message data
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
             dos.writeUTF(message.getSender());
             dos.writeUTF(message.getTarget());
@@ -51,10 +56,12 @@ public class Client {
             // clean up resources
             dos.close();
             socket.close();
-            return true;
+            return new SendResult(true, null);
         } catch (Exception e) {
             LOGGER.error("Error while sending message!", e);
-            return false;
+            if(e instanceof SocketTimeoutException) return new SendResult(false, "Connection timed out, is the IP address correct?");
+            else if(e.getMessage().contains("Connection refused")) return new SendResult(false, "Connection was refused, is the IP address correct?");
+            else return new SendResult(false, e.getMessage());
         }
     }
 
