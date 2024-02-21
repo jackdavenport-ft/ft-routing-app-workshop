@@ -6,6 +6,7 @@
 ****************************************************************/
 package com.ft.routing.ui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -21,10 +22,14 @@ import com.ft.routing.Interface;
 import com.ft.routing.messaging.Mailbox.MessageDirection;
 
 public class ConfigurePanel extends JPanel implements ActionListener {
+
+    private static final Color UNREAD_COLOR = Color.blue;
     
     private final JButton incomingButton;
     private final JButton outgoingButton;
     private final JButton forwardedButton;
+
+    private final Color defaultButtonColor;
 
     private final Interface parent;
 
@@ -44,6 +49,8 @@ public class ConfigurePanel extends JPanel implements ActionListener {
         this.incomingButton = new JButton();
         this.outgoingButton = new JButton();
         this.forwardedButton = new JButton();
+
+        this.defaultButtonColor = this.incomingButton.getForeground();
 
         setInboxCount(0);
         setOutboxCount(0);
@@ -83,20 +90,26 @@ public class ConfigurePanel extends JPanel implements ActionListener {
                 if(direction != null) {
                     new MailboxDialog(this.parent, App.getMailbox(), direction);
                 }
+                if(e.getSource() instanceof JButton) {
+                    ((JButton)e.getSource()).setForeground(this.defaultButtonColor);
+                }
                 break;
         }
     }
 
     public void setInboxCount(int count) {
         this.incomingButton.setText(String.format("Inbox (%d)", count));
+        if(count > 0) this.incomingButton.setForeground(UNREAD_COLOR);
     }
 
     public void setOutboxCount(int count) {
         this.outgoingButton.setText(String.format("Outbox (%d)", count));
+        if(count > 0) this.outgoingButton.setForeground(UNREAD_COLOR);
     }
 
     public void setForwardedCount(int count) {
         this.forwardedButton.setText(String.format("Forwarded (%d)", count));
+        if(count > 0) this.forwardedButton.setForeground(UNREAD_COLOR);
     }
 
 }

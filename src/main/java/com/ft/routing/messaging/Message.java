@@ -6,6 +6,9 @@
 ****************************************************************/
 package com.ft.routing.messaging;
 
+import lombok.Getter;
+
+@Getter
 public class Message {
     
     private final String content;
@@ -16,18 +19,6 @@ public class Message {
         this.content = content;
         this.sender  = sender;
         this.target  = target;
-    }
-
-    public String getContent() {
-        return this.content;
-    }
-
-    public String getSender() {
-        return this.sender;
-    }
-
-    public String getTarget() {
-        return this.target;
     }
 
 }
