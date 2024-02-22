@@ -104,7 +104,6 @@ public class ConfigurePanel extends JPanel implements ActionListener {
 
     public void setOutboxCount(int count) {
         this.outgoingButton.setText(String.format("Outbox (%d)", count));
-        if(count > 0) this.outgoingButton.setForeground(UNREAD_COLOR);
     }
 
     public void setForwardedCount(int count) {
